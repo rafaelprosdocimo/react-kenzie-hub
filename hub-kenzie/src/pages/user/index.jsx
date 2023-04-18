@@ -1,29 +1,19 @@
 import React, { useEffect } from "react";
 import { api } from "../../services/api";
 import { Link } from "react-router-dom";
-import imgLogo from "../../assets/logo.png"
+import imgLogo from "../../assets/Logo.png"
 import { StyledHeader } from "../../components/Header/Header"
 import { StyledNavBar } from "../../components/NavBar/styledNavBar";
 import { StyledForm } from "../../components/StyledForm/StyledForm.jsx";
 import { StyledMain } from "../../components/StyledMain/StyledMain";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import { useContext } from "react";
+import { UserContext } from "../../providers/UserContext"; 
 export const User = () => {
-
-    const [user, setUser] = React.useState([])
+    const {user, setUser, loggedIn} = useContext(UserContext)
 
     useEffect(() => {
-        const userID = localStorage.getItem('@USERID')
-        const token = localStorage.getItem('@TOKEN')
-        console.log(userID)
-        const loadUser = async () => {
-            const response = await api.get(`/users/${userID}`)
-            setUser(response.data)
-        }
-        loadUser()
-    }, [])
-
-
+        loggedIn()
+    },[])
 
     return (<>
         <StyledNavBar routeNav="user">
@@ -32,8 +22,8 @@ export const User = () => {
                 e.preventDefault()
                 setUser([])
                 localStorage.clear()
-
-            }} className="button-nav"><Link to="/">Sair</Link></button>
+                window.location.href = "/"
+            }} className="button-nav" type="button"></button>
         </StyledNavBar>
         <StyledHeader>
                 <h2>Olá, {user.name}</h2>
