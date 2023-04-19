@@ -1,52 +1,22 @@
 import React, { useEffect } from "react";
-import { api } from "../../services/api";
 import { Link } from "react-router-dom";
 import imgLogo from "../../assets/Logo.png"
-import { StyledHeader } from "../../components/Header/Header"
 import { StyledNavBar } from "../../components/NavBar/styledNavBar";
 import { StyledForm } from "../../components/StyledForm/StyledForm.jsx";
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom";
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod'
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
-import { RegisterFormContent } from "../../components/StyledForm/FormRegister";
+import { useContext } from "react";
+import { UserContext } from "../../providers/UserContext"; 
 
-const schema = z.object({
-    email: z.string().nonempty("Email é obrigatório").email(),
-    password: z.string().min(8)
-    .regex(/(?=.*?[A-Z])/, "É necessário ao menos uma letra maiúscula")
-    .regex(/(?=.*?[a-z])/, "É necessário ao menos uma letra minúscula")
-    .regex(/(?=.*?[0-9])/, "É necessário pelo menos um número"),
-    name: z.string().nonempty("Nome é obrigatório"),
-    bio: z.string().nonempty("Bio é obrigatório"),
-    contact: z.string().nonempty("Contato é obrigatório"),
-    course_module: z.string().nonempty("Módulo é obrigatório"),
-    confirm: z.string().min(1, "A confirmação de senha é obrigatória")
-}).refine(({password, confirm}) => password === confirm, {
-  message: "As senhas precisam corresponderem",
-  path: ["confirm"],
-})
 
 export const Register = () => {
+    const {handleRegister, schemaRegister} = useContext(UserContext)
 
     const  { register, handleSubmit,formState: { errors }} = useForm({
-        resolver: zodResolver(schema)
+        resolver: zodResolver(schemaRegister)
     });
-    const navigate = useNavigate();
-
-    const handleRegister = async (data) => {
-        console.log(data)
-        try{
-            await    api.post('/users', data).then(response => console.log(response.data))
-            navigate('/')
-            toast.success('Cadastro realizado com sucesso')
-        }catch(err){
-            console.log(err)
-            toast.error('Algo deu errado')
-        }
-    }
 
 
     return (
@@ -58,7 +28,7 @@ export const Register = () => {
             </StyledNavBar>
             <main>
                 <StyledForm onSubmit={handleSubmit(handleRegister)}>
-                <h2 className="title">Crie sua conta</h2>
+                    <h2 className="title">Crie sua conta</h2>
                     <p className="info">Rápido e grátis, vamos nessa</p>
                     <label htmlFor="email">Email</label>
                     <input  type="email" placeholder="Digite aqui seu email" name="email" {...register("email")} id="email" />
