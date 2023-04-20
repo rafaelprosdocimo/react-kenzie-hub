@@ -45,4 +45,7 @@ export const StyledNavBar = styled.nav`
         text-decoration: none;
         color: #F8F9FA;
     }
+    @media (max-width: 768px) {
+        width: 95%;
+    }
 `;

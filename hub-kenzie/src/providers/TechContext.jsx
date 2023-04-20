@@ -13,6 +13,16 @@ export const TechProvider = ({ children }) => {
     
     const [modalBool, setModalBool] = useState(false)
 
+    const getTech = async () => { 
+        const token = localStorage.getItem('@TOKEN')
+        
+        await api.get('/profile', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => setTech(response.data.techs))
+    }
+
     const handleCLickOpen = () => {
         setModalBool(true)
         console.log(modalBool)
@@ -21,16 +31,44 @@ export const TechProvider = ({ children }) => {
         setModalBool(false)
         console.log(modalBool)
     }
-    useEffect(() => {
-        if (modalBool === true) {
+    
+
+    const handleCreate = async (data) => {
+        console.log(data)
+        const token = localStorage.getItem('@TOKEN')
+        try{
             
-        } else {
-            
+            await    api.post(
+                '/users/techs'
+                , data, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(response => console.log(response.data))
+
+            getTech()
+            handleCLickClose()
+        }catch(err){
+            console.log(err)
         }
-    },[modalBool])
+    }
+
+    const deleteTech = async (id) => {
+        const token = localStorage.getItem('@TOKEN')
+        try{
+            await api.delete(`/users/techs/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(response => console.log(response.data))
+            getTech()
+        }catch(err){
+            console.log(err)
+        }
+    }
 
     return (
-        <TechContext.Provider value={{ modalBool, setModalBool, handleCLickOpen, tech, setTech, handleCLickClose}}>
+        <TechContext.Provider value={{deleteTech,getTech, modalBool, setModalBool, handleCLickOpen, tech, setTech, handleCLickClose, handleCreate}}>
             {children}
         </TechContext.Provider>
     )

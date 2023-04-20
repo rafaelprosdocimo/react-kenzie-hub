@@ -24,7 +24,7 @@ export const StyledMain = styled.main`
         line-height: 24px;
     }
     @media (max-width: 768px) {
-            display: none;
+        width: 95%;
     }
 
     .header-tech{
@@ -88,6 +88,12 @@ export const StyledMain = styled.main`
         justify-content: space-between;
         align-items: center;
         gap: 30px;
+    }
+    ul{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
     }
 
 `

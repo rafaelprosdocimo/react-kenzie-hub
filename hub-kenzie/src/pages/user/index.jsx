@@ -8,12 +8,14 @@ import { useContext } from "react";
 import { UserContext } from "../../providers/UserContext"; 
 import { ModalTech } from "../../components/Modal/ModalTech";
 import { TechContext } from "../../providers/TechContext";
+import { ListItem } from "../../components/ListItem/ListItem";
 export const User = () => {
     const {user, setUser, loggedIn} = useContext(UserContext)
-    const {modalBool, setModalBool, handleCLickOpen, tech, setTech} = useContext(TechContext)
+    const {modalBool, handleCLickOpen, tech, setTech, getTech} = useContext(TechContext)
 
     useEffect(() => {
         loggedIn()
+        getTech()
     },[])
 
 
@@ -32,7 +34,7 @@ export const User = () => {
                         setUser([])
                         localStorage.clear()
                         window.location.href = "/"
-                    }} className="button-nav" type="button"></button>
+                    }} className="button-nav" type="button">Sair</button>
                 </StyledNavBar>
                 <StyledHeader>
                         <h2>Olá, {user.name}</h2>
@@ -44,22 +46,10 @@ export const User = () => {
                         <button className="add-tech" onClick={()=>{handleCLickOpen()}} type="button">+</button>
                     </div>
                     <ul className="list-tech">
-                    <li className="card-tech">
-                        <h2 className="h2-tech">React JS</h2>
-                            <div className="card-wrapper">
-                                <p className="p-tech">Intermediário</p>
-                                <button className="delete-tech" type="button">X</button>
-                            </div>
-                        </li>
+                    
                         {tech.map((item) => {
                             return(
-                                <li className="card-tech">
-                                    <h2 className="h2-tech">React JS</h2>
-                                    <div className="card-wrapper">
-                                        <p className="p-tech">Intermediário</p>
-                                        <button className="delete-tech" type="button">X</button>
-                                    </div>
-                                </li>
+                                <ListItem key={item.id} item={item}/>
                             )
                         })}
                         

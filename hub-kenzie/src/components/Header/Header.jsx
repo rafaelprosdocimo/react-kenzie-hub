@@ -29,4 +29,7 @@ export const StyledHeader = styled.header`
         /* identical to box height, or 183% */
         color: #868E96;
     }
+    @media (max-width: 768px) {
+        width: 95%;
+    }
     `;

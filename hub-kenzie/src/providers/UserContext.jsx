@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import * as z from 'zod'
+import { TechContext } from "./TechContext";
+import { useContext } from "react";
 
 export const UserContext = createContext();
 
@@ -17,6 +19,7 @@ export const UserProvider = ({ children }) => {
         const loadUser = async () => {
             const response = await api.get(`/users/${userID}`)
             setUser(response.data)
+
         }
         loadUser()
     }
